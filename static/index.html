@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AEGIS // Dual-Node Agent Command Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <!-- Background grid & lighting effects -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="cyber-grid"></div>
+
+    <div class="app-container">
+        <!-- Top Navigation Header -->
+        <header class="top-nav">
+            <div class="brand">
+                <div class="brand-icon">
+                    <i data-lucide="shield-alert"></i>
+                </div>
+                <div class="brand-text">
+                    <h1>AEGIS <span>BRIDGE</span></h1>
+                    <p class="subtitle">KALI LINUX &times; WINDOWS DUAL-NODE CORRELATION ENGINE</p>
+                </div>
+            </div>
+
+            <div class="nav-metrics">
+                <div class="metric-pill" id="kaliPill">
+                    <span class="status-dot offline"></span>
+                    <span class="label">KALI GATEWAY</span>
+                    <span class="value" id="kaliLatency">OFFLINE</span>
+                </div>
+                <div class="bridge-indicator">
+                    <div class="pulse-line"></div>
+                    <i data-lucide="arrow-left-right" class="bridge-icon"></i>
+                    <div class="pulse-line"></div>
+                </div>
+                <div class="metric-pill" id="winPill">
+                    <span class="status-dot offline"></span>
+                    <span class="label">WIN CLIENT</span>
+                    <span class="value" id="winLatency">OFFLINE</span>
+                </div>
+                <button class="btn-refresh" id="btnRefresh" title="Refresh Topology">
+                    <i data-lucide="refresh-cw"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="main-layout">
+            
+            <!-- SECTION 1: Dynamic Network Topology & Status Matrix -->
+            <section class="topology-matrix-section">
+                <!-- Kali Linux Node Card -->
+                <div class="node-card kali-card" id="kaliNodeCard">
+                    <div class="node-header">
+                        <div class="node-title">
+                            <i data-lucide="terminal" class="os-icon kali-icon"></i>
+                            <div>
+                                <h3>Kali Linux Node</h3>
+                                <span class="badge badge-kali" id="kaliRoleBadge">Primary Gateway / Router</span>
+                            </div>
+                        </div>
+                        <div class="node-status-badge" id="kaliStatusBadge">Connecting...</div>
+                    </div>
+
+                    <div class="node-body">
+                        <!-- Network Interfaces & Wi-Fi Info -->
+                        <div class="info-group">
+                            <div class="info-row">
+                                <span class="info-label"><i data-lucide="wifi"></i> Wi-Fi Interface:</span>
+                                <span class="info-value" id="kaliWifiIface">--</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label"><i data-lucide="radio"></i> Wi-Fi Mode:</span>
+                                <span class="info-value badge-mode" id="kaliWifiMode">MANAGED</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label"><i data-lucide="network"></i> Kali LAN IP:</span>
+                                <span class="info-value text-cyan" id="kaliLanIp">192.168.137.177</span>
+                            </div>
+                        </div>
+
+                        <!-- Hardware Gauges -->
+                        <div class="resource-gauges">
+                            <div class="gauge-item">
+                                <div class="gauge-header">
+                                    <span>CPU Load</span>
+                                    <span id="kaliCpuVal">0%</span>
+                                </div>
+                                <div class="progress-bar"><div class="progress-fill kali-fill" id="kaliCpuBar" style="width: 0%"></div></div>
+                            </div>
+                            <div class="gauge-item">
+                                <div class="gauge-header">
+                                    <span>RAM Memory</span>
+                                    <span id="kaliMemVal">0 MB</span>
+                                </div>
+                                <div class="progress-bar"><div class="progress-fill kali-fill" id="kaliMemBar" style="width: 0%"></div></div>
+                            </div>
+                        </div>
+
+                        <!-- Wi-Fi Mode Quick Switcher -->
+                        <div class="node-actions">
+                            <button class="btn btn-secondary btn-sm" id="btnToggleMonitor">
+                                <i data-lucide="radio-tower"></i> Toggle Monitor Mode
+                            </button>
+                            <button class="btn btn-secondary btn-sm" id="btnKaliQuickRecon">
+                                <i data-lucide="radar"></i> Run Nmap Recon
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Central Bridge Interlink Visualization -->
+                <div class="topology-interlink">
+                    <div class="interlink-wire">
+                        <div class="packet-particle"></div>
+                        <div class="packet-particle reverse"></div>
+                    </div>
+                    <div class="interlink-badge">
+                        <i data-lucide="ethernet-port"></i>
+                        <span>DIRECT ETHERNET LAN</span>
+                        <small>10.42.0.0/24 Subnet</small>
+                    </div>
+                </div>
+
+                <!-- Windows Node Card -->
+                <div class="node-card win-card" id="winNodeCard">
+                    <div class="node-header">
+                        <div class="node-title">
+                            <i data-lucide="monitor" class="os-icon win-icon"></i>
+                            <div>
+                                <h3>Windows Host PC</h3>
+                                <span class="badge badge-win" id="winRoleBadge">Workstation & Validation</span>
+                            </div>
+                        </div>
+                        <div class="node-status-badge" id="winStatusBadge">Connecting...</div>
+                    </div>
+
+                    <div class="node-body">
+                        <!-- Network & Host Info -->
+                        <div class="info-group">
+                            <div class="info-row">
+                                <span class="info-label"><i data-lucide="globe"></i> Assigned Client IP:</span>
+                                <span class="info-value text-green" id="winClientIp">10.42.0.x</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label"><i data-lucide="route"></i> Default Gateway:</span>
+                                <span class="info-value" id="winGateway">10.42.0.1</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label"><i data-lucide="check-circle"></i> Validation Engine:</span>
+                                <span class="info-value text-cyan">Active (PowerShell & HTTP)</span>
+                            </div>
+                        </div>
+
+                        <!-- Hardware Gauges -->
+                        <div class="resource-gauges">
+                            <div class="gauge-item">
+                                <div class="gauge-header">
+                                    <span>CPU Load</span>
+                                    <span id="winCpuVal">0%</span>
+                                </div>
+                                <div class="progress-bar"><div class="progress-fill win-fill" id="winCpuBar" style="width: 0%"></div></div>
+                            </div>
+                            <div class="gauge-item">
+                                <div class="gauge-header">
+                                    <span>RAM Memory</span>
+                                    <span id="winMemVal">0 MB</span>
+                                </div>
+                                <div class="progress-bar"><div class="progress-fill win-fill" id="winMemBar" style="width: 0%"></div></div>
+                            </div>
+                        </div>
+
+                        <!-- Windows Quick Actions -->
+                        <div class="node-actions">
+                            <button class="btn btn-secondary btn-sm" id="btnWinTestRoute">
+                                <i data-lucide="route"></i> Test Kali Gateway Route
+                            </button>
+                            <button class="btn btn-secondary btn-sm" id="btnWinValidateDns">
+                                <i data-lucide="shield-check"></i> Check DNS Reachability
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: AI Agent Goal Dispatcher & Copilot -->
+            <section class="agent-copilot-section card">
+                <div class="section-header">
+                    <div class="section-title">
+                        <i data-lucide="bot" class="text-purple"></i>
+                        <h2>AI Cross-Node Agent Orchestrator</h2>
+                    </div>
+                    <span class="tag">Autonomous Correlation</span>
+                </div>
+                <div class="copilot-input-box">
+                    <input type="text" id="agentPromptInput" placeholder="Enter cross-node objective (e.g. 'Execute nmap port scan on Kali and validate web server response from Windows client')..." />
+                    <button class="btn btn-primary" id="btnDispatchAgent">
+                        <i data-lucide="zap"></i> Dispatch Plan
+                    </button>
+                </div>
+                <!-- Interactive Plan Stream -->
+                <div class="copilot-results" id="copilotResults" style="display: none;">
+                    <div class="copilot-results-header">
+                        <h4 id="copilotSummary">Execution Plan</h4>
+                        <span class="badge badge-success" id="copilotStatus">DONE</span>
+                    </div>
+                    <div class="plan-steps-timeline" id="planStepsContainer"></div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: Tabbed Dual Terminal & Cross-Node Workflows -->
+            <section class="workspace-section">
+                <div class="workspace-tabs">
+                    <button class="tab-btn active" data-tab="tab-terminal-split">
+                        <i data-lucide="columns"></i> Dual Split Terminal
+                    </button>
+                    <button class="tab-btn" data-tab="tab-workflows">
+                        <i data-lucide="git-merge"></i> Playbooks & Workflows
+                    </button>
+                    <button class="tab-btn" data-tab="tab-file-sync">
+                        <i data-lucide="folder-sync"></i> File & Artifact Sync
+                    </button>
+                </div>
+
+                <!-- Tab 1: Dual Split Terminal -->
+                <div class="tab-content active" id="tab-terminal-split">
+                    <div class="dual-terminal-grid">
+                        <!-- Kali Terminal Pane -->
+                        <div class="terminal-pane kali-term-pane">
+                            <div class="term-header">
+                                <div class="term-title">
+                                    <span class="term-dot red"></span>
+                                    <span class="term-dot yellow"></span>
+                                    <span class="term-dot green"></span>
+                                    <span class="term-name"><i data-lucide="terminal"></i> Kali Linux (Bash)</span>
+                                </div>
+                                <div class="term-tools">
+                                    <button class="btn-icon" id="btnClearKaliTerm" title="Clear Console"><i data-lucide="trash-2"></i></button>
+                                </div>
+                            </div>
+                            <div class="terminal-body" id="kaliTermOutput">
+                                <div class="term-line sys">Aegis Terminal Bridge initialized for Kali Linux Mini PC.</div>
+                                <div class="term-line sys">Type commands below or click preset actions.</div>
+                            </div>
+                            <div class="term-input-bar">
+                                <span class="prompt-symbol text-cyan">kali@root:~#</span>
+                                <input type="text" id="kaliTermInput" placeholder="e.g. nmap -sn 10.42.0.0/24, iwconfig, aircrack-ng..." />
+                                <button class="btn btn-sm btn-kali" id="btnSendKali">Run</button>
+                            </div>
+                        </div>
+
+                        <!-- Windows Terminal Pane -->
+                        <div class="terminal-pane win-term-pane">
+                            <div class="term-header">
+                                <div class="term-title">
+                                    <span class="term-dot red"></span>
+                                    <span class="term-dot yellow"></span>
+                                    <span class="term-dot green"></span>
+                                    <span class="term-name"><i data-lucide="monitor"></i> Windows Host (PowerShell)</span>
+                                </div>
+                                <div class="term-tools">
+                                    <button class="btn-icon" id="btnClearWinTerm" title="Clear Console"><i data-lucide="trash-2"></i></button>
+                                </div>
+                            </div>
+                            <div class="terminal-body" id="winTermOutput">
+                                <div class="term-line sys">Aegis Terminal Bridge initialized for Windows Host PC.</div>
+                                <div class="term-line sys">Ready for PowerShell validation & task execution.</div>
+                            </div>
+                            <div class="term-input-bar">
+                                <span class="prompt-symbol text-green">PS C:\></span>
+                                <input type="text" id="winTermInput" placeholder="e.g. Test-Connection 10.42.0.1, Get-NetRoute, ipconfig..." />
+                                <button class="btn btn-sm btn-win" id="btnSendWin">Run</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Cross-Node Playbooks & Workflows -->
+                <div class="tab-content" id="tab-workflows">
+                    <div class="workflow-catalog">
+                        <!-- Workflow Card 1 -->
+                        <div class="wf-card">
+                            <div class="wf-card-header">
+                                <div>
+                                    <h4>Full Gateway Recon & Windows Client Validation</h4>
+                                    <p>Kali conducts rapid port scan on gateway; Windows validates live reachability & DNS.</p>
+                                </div>
+                                <button class="btn btn-primary btn-sm" onclick="triggerPresetWorkflow('recon_validation')">
+                                    <i data-lucide="play"></i> Execute Playbook
+                                </button>
+                            </div>
+                            <div class="wf-steps-preview">
+                                <div class="wf-step-pill kali-step">1. [Kali] Nmap Scan on 10.42.0.1</div>
+                                <i data-lucide="chevron-right"></i>
+                                <div class="wf-step-pill win-step">2. [Windows] Validate Gateway Ping</div>
+                                <i data-lucide="chevron-right"></i>
+                                <div class="wf-step-pill win-step">3. [Windows] Validate Internet DNS</div>
+                            </div>
+                        </div>
+
+                        <!-- Workflow Card 2 -->
+                        <div class="wf-card">
+                            <div class="wf-card-header">
+                                <div>
+                                    <h4>Wi-Fi Monitor Mode Sniff & Windows Route Verification</h4>
+                                    <p>Switches Kali Wi-Fi to monitor mode, verifies packet capture interface, asserts Windows routing stability.</p>
+                                </div>
+                                <button class="btn btn-primary btn-sm" onclick="triggerPresetWorkflow('wifi_sniff_validate')">
+                                    <i data-lucide="play"></i> Execute Playbook
+                                </button>
+                            </div>
+                            <div class="wf-steps-preview">
+                                <div class="wf-step-pill kali-step">1. [Kali] Switch Wi-Fi to Monitor Mode</div>
+                                <i data-lucide="chevron-right"></i>
+                                <div class="wf-step-pill kali-step">2. [Kali] Verify wlan0mon Interface</div>
+                                <i data-lucide="chevron-right"></i>
+                                <div class="wf-step-pill win-step">3. [Windows] Test LAN Connection Keepalive</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Workflow Run Output Visualizer -->
+                    <div class="wf-output-box" id="wfOutputBox" style="display: none;">
+                        <div class="wf-output-header">
+                            <h4 id="wfTitle">Workflow Execution</h4>
+                            <span class="badge" id="wfBadge">RUNNING</span>
+                        </div>
+                        <div class="wf-timeline" id="wfTimeline"></div>
+                    </div>
+                </div>
+
+                <!-- Tab 3: File & Artifact Sync -->
+                <div class="tab-content" id="tab-file-sync">
+                    <div class="file-sync-grid">
+                        <div class="file-card">
+                            <h4><i data-lucide="upload-cloud"></i> Push Artifact to Kali Linux</h4>
+                            <p>Upload files or tool configurations directly to Kali's <code>/tmp/aegis_storage</code> directory.</p>
+                            <input type="file" id="fileKaliUpload" class="file-input" />
+                            <button class="btn btn-secondary mt-2" id="btnUploadKali">Upload to Kali</button>
+                        </div>
+                        <div class="file-card">
+                            <h4><i data-lucide="download-cloud"></i> Sync Captures / Logs from Kali</h4>
+                            <p>Fetch PCAPs, Nmap XML scans, or handshake files generated by Kali down to your Windows PC.</p>
+                            <input type="text" id="kaliDownloadPath" placeholder="/tmp/aegis_storage/capture.pcap" class="text-input" />
+                            <button class="btn btn-secondary mt-2" id="btnDownloadKali">Fetch to Windows</button>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <script src="/static/app.js"></script>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>

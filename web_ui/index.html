@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DEEP RESEARX // Autonomous Multimodal Research & Annotation Canvas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Marked & Highlight.js for fast Markdown & Code rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- TOP HEADER -->
+    <header class="app-header">
+      <div class="brand-zone">
+        <div class="brand-badge">
+          <span class="pulsing-dot"></span>
+          <span class="brand-title">DEEP RESEARX</span>
+        </div>
+        <span class="brand-subtitle">Autonomous Multi-Agent Loop • Unrestricted Local Inference</span>
+      </div>
+
+      <div class="header-controls">
+        <div class="model-badge-group">
+          <span class="badge-label">Active Backend:</span>
+          <span class="status-badge live" id="backendStatusBadge">Ollama (Local)</span>
+          <select id="modelSelector" class="model-dropdown">
+            <option value="deepseek-r1:7b">DeepSeek-R1 (7B Reasoning)</option>
+            <option value="llava:7b">Llava (7B Vision / Multimodal)</option>
+            <option value="qwen2.5:7b">Qwen 2.5 (7B SOTA)</option>
+          </select>
+        </div>
+        <button class="btn-ghost" id="clearWorkspaceBtn" title="Clear Canvas">🗑️ Clear</button>
+      </div>
+    </header>
+
+    <!-- MAIN DUAL-PANE WORKSPACE -->
+    <main class="workspace-grid">
+      <!-- LEFT PANE: RESEARCH CANVAS & ANNOTATIONS -->
+      <section class="pane left-pane">
+        <div class="pane-header">
+          <div class="pane-title-group">
+            <span class="pane-icon">📊</span>
+            <h2>Autonomous Research Dossier</h2>
+          </div>
+          <div class="canvas-actions">
+            <button class="action-chip" id="copyMarkdownBtn" title="Copy Full Markdown">📋 Copy MD</button>
+            <button class="action-chip" id="downloadMarkdownBtn" title="Download Report">💾 Download</button>
+            <button class="action-chip highlight-chip" id="toggleCommentPanelBtn">💬 Comments (<span id="commentCount">0</span>)</button>
+          </div>
+        </div>
+
+        <!-- SEARCH / RESEARCH QUERY INPUT BAR -->
+        <div class="research-input-card">
+          <div class="input-row">
+            <span class="search-lens">🔍</span>
+            <input 
+              type="text" 
+              id="researchQueryInput" 
+              placeholder="Enter complex research topic (e.g. Solid-state battery commercialization 2025 performance matrix)..." 
+              autocomplete="off"
+            />
+            <button id="startResearchBtn" class="btn-primary">
+              <span class="btn-text">Execute Research</span>
+              <span class="spinner" style="display:none;"></span>
+            </button>
+          </div>
+
+          <div class="quick-tags">
+            <span class="tag-label">Presets:</span>
+            <button class="quick-tag" data-query="Solid-state battery commercialization timeline and performance matrix 2025">🔋 Solid-State Batteries</button>
+            <button class="quick-tag" data-query="Local vector databases benchmarks LanceDB vs Chroma vs Qdrant latency memory">⚡ Vector DB Benchmarks</button>
+            <button class="quick-tag" data-query="Open-source multimodal vision models comparison Qwen2.5-VL vs MiniCPM vs Llava">👁️ Vision Models SOTA</button>
+          </div>
+        </div>
+
+        <!-- LIVE RESEARCH PIPELINE STEPPER -->
+        <div class="pipeline-stepper" id="pipelineStepper" style="display: none;">
+          <div class="step-item" id="stepPlan">
+            <div class="step-circle">1</div>
+            <div class="step-content">
+              <div class="step-label">Query Decomposition</div>
+              <div class="step-detail" id="stepPlanDetail">Formulating 4 research angles...</div>
+            </div>
+          </div>
+          <div class="step-line"></div>
+          <div class="step-item" id="stepScrape">
+            <div class="step-circle">2</div>
+            <div class="step-content">
+              <div class="step-label">Parallel Web Scrape</div>
+              <div class="step-detail" id="stepScrapeDetail">Gathering 12+ live sources...</div>
+            </div>
+          </div>
+          <div class="step-line"></div>
+          <div class="step-item" id="stepMatrix">
+            <div class="step-circle">3</div>
+            <div class="step-content">
+              <div class="step-label">Metric & Source Extraction</div>
+              <div class="step-detail" id="stepMatrixDetail">Extracting performance data & URLs...</div>
+            </div>
+          </div>
+          <div class="step-line"></div>
+          <div class="step-item" id="stepSynthesize">
+            <div class="step-circle">4</div>
+            <div class="step-content">
+              <div class="step-label">Cited Dossier Synthesis</div>
+              <div class="step-detail" id="stepSynthesizeDetail">Streaming rigorous report...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RESEARCH DOSSIER RENDER VIEWPORT -->
+        <div class="dossier-viewport" id="dossierViewport">
+          <div class="empty-state" id="emptyState">
+            <div class="empty-icon">🔬</div>
+            <h3>Autonomous Deep Research Ready</h3>
+            <p>Enter any topic above. The multi-agent pipeline will decompose the problem into sub-queries, scrape 10–20 real web sources concurrently, extract performance matrices, and synthesize a structured dossier with real clickable citations.</p>
+            <div class="feature-pills">
+              <span>⚡ Zero Fluff</span>
+              <span>📊 Quantitative Performance Tables</span>
+              <span>🔗 Real Scraped URLs</span>
+              <span>💬 Interactive Text Commenting</span>
+            </div>
+          </div>
+
+          <div class="rendered-markdown-content" id="markdownOutput" style="display: none;"></div>
+        </div>
+
+        <!-- FLOATING SELECTION TOOLTIP FOR COMMENTING -->
+        <div class="selection-tooltip" id="selectionTooltip" style="display: none;">
+          <button id="addCommentFromSelectionBtn" class="tooltip-btn">💬 Add Comment</button>
+          <button id="askAboutSelectionBtn" class="tooltip-btn">❓ Ask Model</button>
+        </div>
+
+        <!-- MARGIN COMMENTS SIDE DRAWER -->
+        <aside class="comments-sidebar" id="commentsSidebar">
+          <div class="sidebar-header">
+            <h3>📑 Document Comments & Annotations</h3>
+            <button class="close-sidebar-btn" id="closeCommentsBtn">&times;</button>
+          </div>
+          <div class="comments-list" id="commentsList">
+            <div class="no-comments-msg">Highlight any text on the research dossier to attach comments and annotations.</div>
+          </div>
+        </aside>
+      </section>
+
+      <!-- RIGHT PANE: DIRECT MODEL Q&A & VISION STUDIO -->
+      <section class="pane right-pane">
+        <div class="pane-header">
+          <div class="pane-title-group">
+            <span class="pane-icon">💬</span>
+            <h2>Direct Model Q&A & Vision</h2>
+          </div>
+          <div class="chat-context-switch">
+            <label class="toggle-container" title="Ground answers in the research dossier">
+              <input type="checkbox" id="groundingToggle" checked>
+              <span class="toggle-slider"></span>
+              <span class="toggle-text">Dossier Grounding</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- CHAT MESSAGE TIMELINE -->
+        <div class="chat-timeline" id="chatTimeline">
+          <div class="chat-msg system">
+            <div class="msg-avatar">🤖</div>
+            <div class="msg-body">
+              <strong>Local Agent Ready.</strong> You can ask direct clarifying questions about the research dossier, request performance table deep-dives, or drop images/diagrams for multimodal analysis.
+            </div>
+          </div>
+        </div>
+
+        <!-- MULTIMODAL ATTACHMENT PREVIEW -->
+        <div class="attachment-preview-bar" id="attachmentPreviewBar" style="display: none;">
+          <img id="attachedImagePreview" src="" alt="Attachment" />
+          <div class="attachment-info">
+            <span id="attachedImageName">diagram.png</span>
+            <button id="removeAttachmentBtn" class="remove-btn">&times;</button>
+          </div>
+        </div>
+
+        <!-- CHAT INPUT COMPOSER -->
+        <div class="chat-composer">
+          <input type="file" id="imageFileInput" accept="image/*,application/pdf" style="display: none;" />
+          <button class="btn-attach" id="attachFileBtn" title="Upload Image / Diagram / PDF">📎</button>
+          <textarea 
+            id="chatInputText" 
+            placeholder="Ask a direct question about this research or request a metric breakdown..." 
+            rows="1"
+          ></textarea>
+          <button id="sendChatBtn" class="btn-send">➤</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "include": [
+    "src",
+    "."
+  ],
+  "extraPaths": [
+    "C:/Users/user/AppData/Local/Programs/Python/Python312/Lib/site-packages",
+    "src"
+  ],
+  "pythonVersion": "3.12",
+  "pythonPlatform": "Windows"
+}

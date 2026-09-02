@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "computedAt": "2026-09-01T12:03:33.087Z",
+  "skills": {
+    "skill-feedback-adaptation": {
+      "skill": "skill-feedback-adaptation",
+      "observations": 0,
+      "manualInvocations": 0,
+      "recommendationInvocations": 0,
+      "successCount": 0,
+      "reuseCount": 0,
+      "affinityScore": 0
+    }
+  }
+}

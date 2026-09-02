@@ -1,0 +1,5 @@
+# Pyrefly Language Server Configuration
+python-interpreter-path = "C:/Users/user/AppData/Local/Programs/Python/Python312/python.exe"
+search-path = [".", "src"]
+site-package-path = ["C:/Users/user/AppData/Local/Programs/Python/Python312/Lib/site-packages"]
+project-excludes = ["**/__pyrefly_virtual__/**"]

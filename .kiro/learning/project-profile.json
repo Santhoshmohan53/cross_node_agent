@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "profileType": "throwaway",
+  "detectedFrom": {
+    "gitRemotes": [],
+    "teamSize": "solo",
+    "aiTools": [
+      "claude"
+    ],
+    "budgetPattern": "none",
+    "hasSharedClaudeSkills": false,
+    "isGitRepo": false,
+    "branchCount": 0,
+    "trackedFileCount": 0,
+    "repoSizeKb": 0,
+    "commitsLast30d": 0,
+    "commitsTotal": 0,
+    "projectAgeDays": 0,
+    "authorCount30d": 0,
+    "activityLevel": "none",
+    "hasAidlcWorkflow": false,
+    "hasPendingProfileInit": false,
+    "remoteReachable": false,
+    "remoteOriginUrl": "",
+    "remoteBranchCount": 0,
+    "remoteAuthors30d": 0,
+    "upstreamAhead": 0,
+    "upstreamBehind": 0,
+    "remoteProbeSource": "none"
+  },
+  "enabledFeatures": {
+    "autoOptimizer": false
+  },
+  "costTracking": "off",
+  "confidence": 0.92,
+  "detectedAt": "2026-08-22T21:08:30.946Z",
+  "appliedAt": "2026-08-22T21:08:30.946Z",
+  "rationale": "No git repository — treated as a scratch workspace. Scratch or non-git layout — minimal extension overhead."
+}
