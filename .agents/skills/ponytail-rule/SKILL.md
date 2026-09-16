@@ -1,6 +1,6 @@
 ---
 name: ponytail-rule
-description: Enforce the Ponytail Rule (the pragmatic lazy senior developer standard). Climbs the 7-rung decision ladder before writing code: YAGNI -> existing codebase reuse -> standard library -> native platform -> installed dependencies -> one-liner -> minimal workable code. Prevents over-engineering while strictly preserving validation, error handling, security, and accessibility. Use when designing, refactoring, implementing new features, or reviewing code for bloat and unnecessary abstractions.
+description: "Enforce the Ponytail Rule (the pragmatic lazy senior developer standard). Climbs the 7-rung decision ladder before writing code: YAGNI -> existing codebase reuse -> standard library -> native platform -> installed dependencies -> one-liner -> minimal workable code. Prevents over-engineering while strictly preserving validation, error handling, security, and accessibility. Use when designing, refactoring, implementing new features, or reviewing code for bloat and unnecessary abstractions."
 user-invocable: true
 allowed-tools:
   - Bash
